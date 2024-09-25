@@ -16,8 +16,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")//Column in a database context, the colum name in the database is name
-    private String name;
+    @Column(name = "firstname")//Column in a database context, the colum name in the database is name
+    private String firstname;
 
 
     //Basic implementation of a class, CONSTRUCTOR GETTERS AND SETTERS
@@ -32,10 +32,10 @@ public class User {
     }
 
     public String getName() {
-        return name;
+        return firstname;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.firstname = name;
     }
 }
