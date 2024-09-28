@@ -1,0 +1,71 @@
+.containerUpper{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    width: 100%;
+    height: auto;
+    padding-top: 5%;
+    align-items: flex-start;
+}
+
+.right{
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    padding-right: 10%;
+}
+
+.left{
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    padding-top: 7%;
+    text-align: left;
+    padding-left: 5%;
+}
+
+.left h1{
+    font-size: 2.5em;
+    color: #000000;
+}
+
+.left h2{
+    font-size: 1.5em;
+    color: #66B2FF;
+}
+
+.left h3{
+    font-size: 1em;
+    color: #000000;
+}
+
+.left button{
+    background-color: #0D47A1;
+    color: #ffffff;
+    outline: none;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out; 
+}
+
+.left button:focus{
+    outline: none;
+}
+
+.left button:active{
+    outline: none;
+    transform: scale(0.95);
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.5s ease-out;
+}
+  
+.show {
+    opacity: 1;
+    transform: translateX(0);
+}

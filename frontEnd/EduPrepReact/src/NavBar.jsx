@@ -7,21 +7,25 @@ const NavBar = () =>{
         <nav className='navbar'>
             <div className='navbar-left'>
                 <a href='/' className='logo'>
-                    Home
+                    EduPrep
                 </a>
             </div>
             <div className='navbar-center'>
                 <ul className='nav-links'>
                     <li>
-                        <a href='/login'>Iniciar sesion</a>
+                        <a href='/login'>Ver los cursos</a>
                     </li>
                     <li>
-                        <a href='/register'>Registrarse</a>
+                        <a href='/register'>Testimonios</a>
                     </li>
                     <li>
-                        <a href='/cursos'>Ver los cursos</a>
+                        <a href='/cursos'>Contactanos</a>
                     </li>
                 </ul>
+            </div>
+            <div className='navbar-right'>
+                <a href='/register'>Registrarse</a>
+                <button>Iniciar Sesion</button>
             </div>
         </nav>
     );

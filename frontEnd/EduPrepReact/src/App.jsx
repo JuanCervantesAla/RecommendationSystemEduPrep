@@ -3,6 +3,8 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import NavBar from './NavBar'; 
+import HomeNotLogged from './HomeNotLogged'
+import HomeCourses from './HomeCourses'
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -13,9 +15,12 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={
-          <div>
+          <div className='home'>
             <NavBar/>
-          </div>} />
+            <HomeNotLogged/>
+            <HomeCourses/>
+          </div>
+          } />
         <Route path="/login" element={<p>Here needs to be the login page</p>} />
         <Route path="/register" element={<p>Here needs to be the register page</p>} />
         <Route path="/cursos" element={<p>Here needs to be the register page</p>} />

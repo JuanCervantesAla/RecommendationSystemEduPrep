@@ -1,21 +1,24 @@
 .navbar{
-    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
-    color: #fff;
-    padding: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #FFFFFf;
+    color: #545454;
     position: fixed;
-    top: 0;
-    left: 0;
+    margin: 0;
+    padding: 0;
+    height: 15%;
+    top: 0%;
+    left: 0%;
+    width: 100%;
     z-index: 1000;
 }
 
 .navbar-left .logo{
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     font-weight: bold;
-    color: #fff;
+    color: #545454;
     text-decoration: none;
 }
 
@@ -32,6 +35,37 @@
 }
 
 .navbar-center .nav-links a{
-    color: #fff;
+    color: #545454;
     text-decoration: none;
+}
+
+.navbar-right{
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+    padding: 1rem;
+    color: #545454;
+
+}
+
+.navbar-right a{
+    color: #545454;
+}
+
+.navbar-right button{
+    background-color: #0D47A1;
+    color: #ffffff;
+    outline: none;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out; 
+}
+
+.navbar-right button:focus{
+    outline: none;
+}
+
+.navbar-right button:active{
+    outline: none;
+    transform: scale(0.95);
 }

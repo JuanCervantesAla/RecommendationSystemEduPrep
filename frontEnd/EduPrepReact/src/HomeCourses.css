@@ -1,0 +1,49 @@
+.container{
+    font-family: 'Poppins' , sans-serif;
+    background-color: #FFFFFF;
+}
+
+section{
+    display: grid;
+    place-items: center;
+    align-content: center;
+    min-height: auto;
+}
+
+.textCourse{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.textCourse h1{
+    font-size: 2.5em;
+}
+.textCourse h2{
+    font-size: 1em;
+}
+
+.bubble{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
+    flex-wrap: wrap;
+}
+
+.people{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 2s ease-out;
+  }
+  
+.show {
+    opacity: 1;
+    transform: translateX(0);
+}
