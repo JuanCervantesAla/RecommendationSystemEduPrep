@@ -13,13 +13,13 @@ const NavBar = () =>{
             <div className='navbar-center'>
                 <ul className='nav-links'>
                     <li>
-                        <a href='/login'>Ver los cursos</a>
+                        <a href='/courses'>Ver los cursos</a>
                     </li>
                     <li>
-                        <a href='/register'>Testimonios</a>
+                        <a href='/people'>Testimonios</a>
                     </li>
                     <li>
-                        <a href='/cursos'>Contactanos</a>
+                        <a href='/we'>Contactanos</a>
                     </li>
                 </ul>
             </div>
