@@ -1,5 +1,6 @@
 package dev.EduPrep.eduprep.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -22,8 +23,7 @@ public class Course {
     private boolean isWorkshop;
     private Integer difficult;
 
-
-
+    @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Collection<StudentCourseGrade> grades = new ArrayList<>();
 
@@ -56,11 +56,11 @@ public class Course {
         this.textintroduction = textintroduction;
     }
 
-    public boolean isWorkshop() {
+    public boolean getIsWorkshop() {
         return isWorkshop;
     }
 
-    public void setWorkshop(boolean workshop) {
+    public void setIsWorkshop(boolean workshop) {
         isWorkshop = workshop;
     }
 
