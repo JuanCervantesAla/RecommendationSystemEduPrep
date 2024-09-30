@@ -46,7 +46,7 @@ public class StudentCourseGrade {
         this.course = course;
     }
 
-    public float getGrade() {
+    public double getGrade() {
         return grade;
     }
 
