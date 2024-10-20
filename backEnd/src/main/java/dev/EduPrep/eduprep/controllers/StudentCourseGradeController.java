@@ -22,7 +22,6 @@ public class StudentCourseGradeController {
     private final StudentCourseGradeRepository studentCourseGradeRepository;
     private final UserRepository userRepository;
 
-
     public StudentCourseGradeController(StudentCourseGradeRepository studentCourseGradeRepository, UserRepository userRepository) {
         this.studentCourseGradeRepository = studentCourseGradeRepository;
         this.userRepository = userRepository;

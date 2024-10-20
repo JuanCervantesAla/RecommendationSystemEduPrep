@@ -24,7 +24,7 @@ import java.util.List;
 public class RecommendationServiceController {
 
     @Autowired
-    private RecommendationService recommendationService;
+    private StudentCourseGradeRepository studentCourseGradeRepository;
 
     @Autowired
     private CourseRepository courseRepository;
@@ -32,28 +32,24 @@ public class RecommendationServiceController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private StudentCourseGradeRepository studentCourseGradeRepository;
 
     @GetMapping("/{studentId}")
     public ResponseEntity<List<Course>> getRecommendedCourses(@PathVariable Integer studentId){
         User student = userRepository.findById(studentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Estudiante no encontrado"));
 
-        List<Course> allCourses = courseRepository.findAll();
+        List<Course> allCourses = courseRepository.findAll();//Getting all the course
         List<StudentCourseGrade> completedGrades = studentCourseGradeRepository.findByStudent_StudentId(studentId);
+        RecommendationService recommendationService = new RecommendationService(allCourses,completedGrades);
 
         if(completedGrades.isEmpty()){
-            System.out.println("This mf ain't studin: " + student.getStudentId());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.emptyList());
         }
 
-        List<Course> recommendedCourses = recommendationService.recommendCoursesUsingCosineSimilarityWithDifficulty(student, allCourses);
+        List<Course> recommendedCourses = recommendationService.getRecommendationCourseList(student);
         if (recommendedCourses.isEmpty()) {
-            System.out.println("Some shi going thru you stuff g: " + student.getStudentId());
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Collections.emptyList());
         }
-
 
         return ResponseEntity.ok(recommendedCourses);
 
