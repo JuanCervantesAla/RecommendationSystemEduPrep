@@ -1,29 +1,46 @@
 import { useState } from "react"; 
 import './LoginPage.css';
+import axios from 'axios';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
-  const [user, setUser] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Evitar el comportamiento predeterminado del formulario
-    // Aquí puedes manejar el inicio de sesión, como hacer una llamada a la API
-    console.log('Usuario:', user);
-    console.log('Contraseña:', password);
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+    
+    try{
+      const response = await axios.post('http://localhost:8080/api/user/login', {
+        email: email,
+        password: password
+      });
+
+      if(response.status === 200){
+        const { message, data } = response.data;
+        navigate('/dashBoard', {state: {user:data}});
+      }
+
+    } catch (error) {
+      console.error("Error en el inicio de sesion: " , error.response?.data || error.message);
+    }
+
   };
 
   return (
-    <div className="container">
+    <div className="container2">
         <div className="wrapper">
             <form onSubmit={handleSubmit} name="formulario" method="post">
                 <h1>Iniciar Sesión</h1>
                 <div className="input-box">
                 <input 
                     type="text" 
-                    name="user" 
-                    placeholder="Nombre de usuario" 
-                    onChange={e => setUser(e.target.value)} 
-                    required // Agregar validación
+                    name="email" 
+                    placeholder="Email" 
+                    onChange={e => setEmail(e.target.value)} 
+                    required 
                 />
                 </div>
                 <div className="input-box">

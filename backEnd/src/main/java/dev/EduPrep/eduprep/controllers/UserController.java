@@ -1,8 +1,11 @@
 package dev.EduPrep.eduprep.controllers;
 
+import dev.EduPrep.eduprep.entities.ApiResponse;
+import dev.EduPrep.eduprep.entities.LoginRequest;
 import dev.EduPrep.eduprep.entities.User;
 import dev.EduPrep.eduprep.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping ("/api/user")
+@CrossOrigin(origins = "http://localhost:5173") //Allow request from my react service
 public class UserController {
 
     private final UserRepository userRepository;
@@ -31,11 +35,6 @@ public class UserController {
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User userDetails) {
         return userRepository.findById(id)
@@ -50,6 +49,45 @@ public class UserController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse> login(@RequestBody LoginRequest loginRequest){
+        Optional<User> userOptional = userRepository.findByEmail(loginRequest.getEmail());
+        if (userOptional.isPresent()){
+            User user = userOptional.get();
+            if(user.getPassword().equals(loginRequest.getPassword())){
+                return ResponseEntity.ok(new ApiResponse("Login correcto", user));
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse("Contraseña errónea, intenta nuevamente", null));
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse("No se encontró el email", null));
+        }
+    }
+
+    @PostMapping("register")
+    public ResponseEntity<?> register(@RequestBody User user){
+        if(userRepository.findByEmail(user.getEmail()).isPresent()){
+            return new ResponseEntity<>(
+                    new ApiResponse("Ya existe un registro con ese correo"),
+                    HttpStatus.CONFLICT
+            );
+        }
+
+        User usery = new User();
+        usery.setFirstname(user.getFirstname());
+        usery.setLastname(user.getLastname());
+        usery.setEmail(user.getEmail());
+        usery.setPassword(user.getPassword());
+        usery.setIdWorkshop(-1);
+
+        userRepository.save(usery);
+
+        return new ResponseEntity<>(
+                new ApiResponse("Usuario ha sido creado", usery),
+                HttpStatus.CREATED//201
+        );
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Integer id) {
@@ -60,6 +98,6 @@ public class UserController {
                 }).orElse(ResponseEntity.notFound().build());
     }
 
-
-
 }
+
+
