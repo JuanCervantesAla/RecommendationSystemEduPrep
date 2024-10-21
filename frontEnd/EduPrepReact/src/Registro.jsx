@@ -22,7 +22,6 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData); // Verifica que los datos estén correctos
 
     try {
         const response = await axios.post('http://localhost:8080/api/user/register', {
@@ -32,8 +31,9 @@ export const Register = () => {
             password: formData.password,
         });
 
-        if(response.data === 201){
+        if(response.status === 201){
           const { message, data } = response.data;
+          console.log(data);
           navigate('/dashBoard', {state: {user:data}});
         }
 

@@ -1,7 +1,6 @@
 import { useState } from "react"; 
 import './LoginPage.css';
 import axios from 'axios';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
