@@ -64,7 +64,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody User user){
         if(userRepository.findByEmail(user.getEmail()).isPresent()){
             return new ResponseEntity<>(
