@@ -32,7 +32,8 @@ const HomeNotLogged = () => {
                 <button>Registrate</button>
             </div>
             <div className="right hidden">
-                <img src="./src/assets/frontimg2.png" width="500px" height="500px"/>
+                <img src="./src/assets/students.png" className="overlay" width="450px" height="450px"/>
+                <img src="./src/assets/pattern.png" width="300px" height="300px"/>
             </div>
         </div>
     );

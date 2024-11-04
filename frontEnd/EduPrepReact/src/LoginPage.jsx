@@ -19,7 +19,7 @@ export const LoginPage = () => {
 
       if(response.status === 200){
         const { message, data } = response.data;
-        navigate('/dashBoard', {state: {user:data}});
+        navigate('/studentprogress', {state: {user:data}});
       }
 
     } catch (error) {
@@ -48,7 +48,7 @@ export const LoginPage = () => {
                     name="password" 
                     placeholder="Contraseña" 
                     onChange={e => setPassword(e.target.value)} 
-                    required // Agregar validación
+                    required
                 />
                 </div>
                 <div>

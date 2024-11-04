@@ -34,7 +34,7 @@ export const Register = () => {
         if(response.status === 201){
           const { message, data } = response.data;
           console.log(data);
-          navigate('/dashBoard', {state: {user:data}});
+          navigate('/studentprogress', {state: {user:data}});
         }
 
     } catch (error) {
