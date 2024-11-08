@@ -6,8 +6,9 @@
     margin: 0;
     font-family: 'Lato', sans-serif;
     width: 100%;
-    height: 42vw;
-    padding-top: 10%;
+    height: 24vw;
+    padding-top: 6%;
+    padding-bottom: 12%;
     align-items: flex-start;
     background-color: #FAFAFA;
 }
@@ -30,7 +31,7 @@
     flex: 1;
     padding: 0;
     margin: 0;
-    padding-top: 7%;
+    padding-top: 3%;
     text-align: left;
     padding-left: 5%;
 }

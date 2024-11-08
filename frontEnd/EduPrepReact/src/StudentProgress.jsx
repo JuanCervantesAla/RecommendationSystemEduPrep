@@ -46,7 +46,7 @@ const StudentProgress = () => {
         <CourseBox title="En Progreso">
           {inProgressCourses.map((course) => (
             <li key={course}>
-              {course} <button>Continuar con el curso</button>
+              {course} <button onClick={handleClickCourse}>Continuar con el curso</button>
             </li>
           ))}
         </CourseBox>

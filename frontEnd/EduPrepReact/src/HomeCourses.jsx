@@ -7,7 +7,6 @@ import { faFlask, faCalculator, faGear, faHeartPulse, faLightbulb } from '@forta
 
 
 const HomeCourses = () => {
-    //Javascript
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
@@ -27,14 +26,12 @@ const HomeCourses = () => {
         };
       }, []);
 
-
-    //Html
     return(
 
         <div className="container">
             <section className="textCourse hidden">
                 <h1> Nuestros cursos</h1>
-                <h2> Encuentra un curso en base a tus caracteristicas</h2>
+                <h2> Encuentra un curso en base a tus resultados</h2>
             </section>
 
             <section className="bubble hidden">

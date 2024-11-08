@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import "./HomeNotLogged.css";
 
 const HomeNotLogged = () => {
-    //Javascript
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
@@ -26,14 +25,14 @@ const HomeNotLogged = () => {
     return(
         <div className="containerUpper">
             <div className="left hidden">
-                <h1>Comienza-Aprende-Refuerza</h1>
-                <h2>En linea, facil y divertido</h2>
-                <h3>Aprende en EduPrep, cursa el bachillerato y talleres especiales hechos para ti</h3>
+                <h1>EduPrep</h1>
+                <h2>Recomendamos un taller en base a resultados de tus cursos</h2>
+                <h3>Adquiere conocimientos completando cursos en esta plataforma y especializate en uno de ellos</h3>
                 <button>Registrate</button>
             </div>
             <div className="right hidden">
-                <img src="./src/assets/students.png" className="overlay" width="450px" height="450px"/>
-                <img src="./src/assets/pattern.png" width="300px" height="300px"/>
+                <img src="./src/assets/students.png" className="overlay" width="350px" height="350px"/>
+                <img src="./src/assets/pattern.png" width="250px" height="250px"/>
             </div>
         </div>
     );

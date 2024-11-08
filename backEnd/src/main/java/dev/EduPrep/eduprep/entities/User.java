@@ -32,6 +32,11 @@ public class User {
     private Collection<StudentCourseGrade> grades = new ArrayList<>();
 
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private Collection<StudentLessonGrade> lessonGrades = new ArrayList<>();
+
+
     //Basic implementation of a class, CONSTRUCTOR GETTERS AND SETTERS
     public User(){}
 
@@ -91,4 +96,14 @@ public class User {
     public void setGrades(Collection<StudentCourseGrade> grades) {
         this.grades = grades;
     }
+
+
+    public Collection<StudentLessonGrade> getLessonGrades() {
+        return lessonGrades;
+    }
+
+    public void setLessonGrades(Collection<StudentLessonGrade> lessonGrades) {
+        this.lessonGrades = lessonGrades;
+    }
+
 }

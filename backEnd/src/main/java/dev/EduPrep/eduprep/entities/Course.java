@@ -11,11 +11,10 @@ import java.util.Set;
 @Entity
 public class Course {
 
-    //Attributes
+    /**********Attributes************/
     @Id//Indicates this att is ID
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer courseId;
-
 
     private String name;
     private String textintroduction;
@@ -23,15 +22,20 @@ public class Course {
     private boolean isWorkshop;
     private Integer difficult;
 
+    /////////////////JPA ANNOTATIONS
     @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Collection<StudentCourseGrade> grades = new ArrayList<>();
 
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Lesson> lessons;
 
-    ///Getter and setters
+
+    /**********Constructor****************/
     public Course(){}
 
 
+    /***********************Getter and Setter***************/
     public Integer getCourseId() {
         return courseId;
     }
@@ -86,5 +90,21 @@ public class Course {
 
     public void setGrades(Collection<StudentCourseGrade> grades) {
         this.grades = grades;
+    }
+
+    public boolean isWorkshop() {
+        return isWorkshop;
+    }
+
+    public void setWorkshop(boolean workshop) {
+        isWorkshop = workshop;
+    }
+
+    public List<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(List<Lesson> lessons) {
+        this.lessons = lessons;
     }
 }
