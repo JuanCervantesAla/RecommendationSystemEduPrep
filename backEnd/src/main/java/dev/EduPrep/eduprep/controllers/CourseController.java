@@ -21,8 +21,14 @@ public class CourseController {
     public CourseController(CourseRepository courseRepository){this.courseRepository = courseRepository;}
 
     @GetMapping
-    public List<Course> courses(){
+    public List<Course> courses(){ //Retrieves all the courses
         return courseRepository.findAll();
+    }
+
+    @GetMapping("/quantity")
+    public ResponseEntity<Long> howMany(){
+        long howManyCourse = courseRepository.count();
+        return ResponseEntity.ok(howManyCourse);
     }
 
     @PostMapping
@@ -46,6 +52,8 @@ public class CourseController {
                     course.setTimedurationmonth(courseDetails.getTimedurationmonth());
                     course.setIsWorkshop(courseDetails.getIsWorkshop());
                     course.setDifficult(courseDetails.getDifficult());
+                    course.setHowManyLesson(courseDetails.getHowManyLesson());
+                    course.setCategory(courseDetails.getCategory());
                     Course updatedCourse = courseRepository.save(course);
                     return ResponseEntity.ok().body(updatedCourse);
                 }).orElse(ResponseEntity.notFound().build());

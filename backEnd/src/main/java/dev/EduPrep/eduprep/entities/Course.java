@@ -21,6 +21,8 @@ public class Course {
     private Integer timedurationmonth;
     private boolean isWorkshop;
     private Integer difficult;
+    private Integer howManyLesson;
+    private String category;
 
     /////////////////JPA ANNOTATIONS
     @JsonIgnore
@@ -106,5 +108,21 @@ public class Course {
 
     public void setLessons(List<Lesson> lessons) {
         this.lessons = lessons;
+    }
+
+    public Integer getHowManyLesson() {
+        return howManyLesson;
+    }
+
+    public void setHowManyLesson(Integer howManyLesson) {
+        this.howManyLesson = howManyLesson;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
