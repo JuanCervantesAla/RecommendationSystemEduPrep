@@ -25,6 +25,16 @@ public class CourseController {
         return courseRepository.findAll();
     }
 
+    @GetMapping("/category/{category}")
+    public List<Course> getCoursesByCategory(@PathVariable String category) {
+        return courseRepository.findByCategory(category);
+    }
+
+    @GetMapping("/name/{name}")
+    public List<Course> getCoursesByFullName(@PathVariable String name) {
+        return courseRepository.findByName(name);
+    }
+
     @GetMapping("/quantity")
     public ResponseEntity<Long> howMany(){
         long howManyCourse = courseRepository.count();
@@ -36,11 +46,17 @@ public class CourseController {
         return courseRepository.save(course);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Course> getCourseId(@PathVariable Integer id){
         Optional<Course> course = courseRepository.findById(id);
         return course.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+//    @GetMapping("/name/{name}")
+//    public ResponseEntity<Course> getCourseName(@PathVariable String name){
+//        Optional<Course> course = courseRepository.findByName(name);
+//        return course.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+//    }
 
 
     @PutMapping("/{id}")
