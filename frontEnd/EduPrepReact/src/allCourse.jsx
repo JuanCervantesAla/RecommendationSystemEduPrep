@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import './allCourse.css';
 import axios from 'axios';
 import NavBar from "./NavBar";
+import NavBarLogged from "./NavBarLogged";
 import Card from "./CardCourse";
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
 
 export const allCourse = () => {
     const [quantityCourse, setQuantityCourse] = useState(null);
@@ -10,6 +13,8 @@ export const allCourse = () => {
     const [allCourses, setAllCourses] = useState([]);
     const [tempCourses, setTempCourses] = useState([]);
     const [valueInput, setValueInput] = useState('');
+    const navigate = useNavigate();
+    const { isAuthenticated, logout } = useAuth();
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/course/quantity')
@@ -73,13 +78,23 @@ export const allCourse = () => {
         setValueInput(event.target.value);
     };
 
+    const handleClickCourse = (course) => {
+      navigate('/courseToSubscribe', { state: { course } });
+    };
+
     useEffect(() => {
         console.log("Longitud de cursos:", courses.length);
     }, [courses]);
 
     return (
         <div className="allCourseContainer">
-            <NavBar />
+            {isAuthenticated ? (
+                <>
+                    <NavBarLogged />
+                </>
+            ) : (
+                    <NavBar />
+            )}
             <div className="allCourseWrapper">
                 <div id="allCourseSearchContainer">
                     <input 
@@ -109,6 +124,7 @@ export const allCourse = () => {
                                 title={course.name}
                                 description={course.textintroduction}
                                 category={course.category}
+                                onClick={() => handleClickCourse(course)}
                             />
                         ))
                     ) : (

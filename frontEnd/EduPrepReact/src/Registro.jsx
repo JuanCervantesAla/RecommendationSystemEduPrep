@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import './Registro.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext'; // Importa useAuth
 
 export const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,8 +12,9 @@ export const Register = () => {
     lastname: "",
   });
   const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleChange = (e) => { //Handle to fill the blank
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -24,31 +26,36 @@ export const Register = () => {
     e.preventDefault();
 
     try {
-        const response = await axios.post('http://localhost:8080/api/user/register', {
-            firstname: formData.name,
-            lastname: formData.lastname,
-            email: formData.email,
-            password: formData.password,
-        });
+      const response = await axios.post('http://localhost:8080/api/user/register', {
+        firstname: formData.name,
+        lastname: formData.lastname,
+        email: formData.email,
+        password: formData.password,
+      });
 
-        if(response.status === 201){
-          const { message, data } = response.data;
-          console.log(data);
-          navigate('/studentprogress', {state: {user:data}});
-        }
+      if(response.status === 201){
+        const { message, data } = response.data;
+        console.log(data);
+
+        
+        login(data);
+
+        
+        navigate('/allCourse', {state: {user:data}});
+      }
 
     } catch (error) {
-        console.error("Error al registrar:", error.response?.data || error.message);
+      console.error("Error al registrar:", error.response?.data || error.message);
     }
-};
+  };
 
   return (
-    <div className="registro-body"> {}
+    <div className="registro-body">
       <section className="registro-section">
         <h2 className="registro-title">Registro</h2>
         <form onSubmit={handleSubmit} className="registro-form">
           <div className="form-group">
-            <label className="registro-label"> {}
+            <label className="registro-label">
               Nombre:
               <input
                 type="text"
@@ -100,7 +107,7 @@ export const Register = () => {
             </label>
           </div>
           <div className="form-group">
-            <button type="submit" className="registro-button">Registrar</button> {}
+            <button type="submit" className="registro-button">Registrar</button>
           </div>
         </form>
       </section>
