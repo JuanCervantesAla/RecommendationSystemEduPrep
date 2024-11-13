@@ -11,7 +11,7 @@ const NavBarLogged = () => {
   };
 
   const handleClickCourses = () => {
-    navigate('/courses');
+    navigate('/allCourse');
   };
 
   return (
