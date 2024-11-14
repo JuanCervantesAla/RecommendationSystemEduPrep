@@ -17,6 +17,7 @@ function Card() {
     const { course } = location.state || {};
     const { user, isAuthenticated, logout } = useAuth();  // Obtenemos el `user` desde el contexto
     const [isEnrolled, setIsEnrolled] = useState(null);
+    const [isSubscribed, setIsSubscribed] = useState(false);
     const navigate = useNavigate();  
 
     const handleLogout = () => {
@@ -48,6 +49,7 @@ function Card() {
                     const response = await axios.post(`http://localhost:8080/api/studentcoursegrade/add/${studentId}/${course.courseId}/${grade}`);
                     if(response.status === 201){
                         toast("Bienvenido al curso!");
+                        setIsSubscribed(true);
                     }
                 }   catch(error)   {
                     toast.error("Error al registrarte al curso");
@@ -82,7 +84,7 @@ function Card() {
                             <span>Categoria: {course.category}</span>
                             <br/>
                             <br/>
-                            <button onClick={subscribe}>Subscribirse al curso</button>
+                            <button onClick={subscribe} className={isSubscribed ? 'suscribedButton' :  ''} disabled={isSubscribed}>Subscribirse al curso</button>
                         </div>
                         <div className="coursecardCourse">
                             <h3>Certificado profesional al terminar las lecciones</h3>

@@ -20,9 +20,8 @@ export const LoginPage = () => {
       });
 
       if (response.status === 200) {
-        
-        localStorage.setItem('user', JSON.stringify(data));
         const { message, data } = response.data;
+        localStorage.setItem('user', JSON.stringify(data));
         
         
         login(data); 
