@@ -133,7 +133,6 @@ export default function Introduccion() {
   
       console.log("Actualizado con éxito:", response.data);
   
-      // Actualiza el estado con el progreso calculado.
       setProgressPercentage(updatedProgressPercentage.toFixed(0));
     } catch (error) {
       console.error("Error al actualizar:", error);

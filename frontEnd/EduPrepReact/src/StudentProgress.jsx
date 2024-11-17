@@ -1,10 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./StudentProgress.css";
-import NavBar from './NavBarLogged';
-import { useNavigate } from 'react-router-dom';
+import NavBarLogged from './NavBarLogged';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+import NavBar from './NavBar';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const StudentProgress = () => {
+  const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const [completedCourses, setCompletedCourses] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/studentcoursegrade/progress-complete')
+      .then((response) => {
+        const coursesWithGrades = response.data.map(item => ({
+          course: item.course, 
+          grade: item.grade,    
+          studentCourseGradeKey: item.studentCourseGradeKey
+        }));
+        setCompletedCourses(coursesWithGrades);
+        console.log(coursesWithGrades);
+      })
+      .catch((error) => {
+        console.error("Fallo al traer los cursos completos", error);
+      });
+  }, []);
+
   const recommendedCourses = ["Psicologia", "Databases", "Web Coding"];
   const inProgressCourses = [
     "Matemáticas",
@@ -13,12 +36,12 @@ const StudentProgress = () => {
     "POO",
     "Historia",
   ];
-  const completedCourses = [
-    { name: "Geografia 1", grade: 95 },
-    { name: "Dibujo 2", grade: 85 },
-    { name: "Ingles 2", grade: 69 },
-    { name: "Ofimatica", grade: 78 },
-  ];
+  // const completedCourses = [
+  //   { name: "Geografia 1", grade: 95 },
+  //   { name: "Dibujo 2", grade: 85 },
+  //   { name: "Ingles 2", grade: 69 },
+  //   { name: "Ofimatica", grade: 78 },
+  // ];
   const progressData = [
     { name: "Matemáticas", progress: 70 },
     { name: "Español", progress: 25 },
@@ -34,7 +57,7 @@ const StudentProgress = () => {
   return (
     <div className="student-progress">
       <NavBar />
-      <h1>PROGRESO DE APRENDIZAJE DEL ESTUDIANTE</h1>
+      <h1>PROGRESO DE APRENDIZAJE DEL ESTUDIANTE {user.firstname}</h1>
       <div className="course-sections">
         <CourseBox title="Cursos Recomendados">
           {recommendedCourses.map((course) => (
@@ -52,8 +75,9 @@ const StudentProgress = () => {
         </CourseBox>
         <CourseBox title="Cursos Completados">
           {completedCourses.map((course) => (
-            <li key={course.name}>
-              {course.name} <span>Calificación: {course.grade}</span>
+            <li key={course.studentCourseGradeKey.courseId}>
+              {course.course.name}
+              <span>Calificación: {course.grade}</span>
             </li>
           ))}
         </CourseBox>
