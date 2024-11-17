@@ -52,6 +52,11 @@ public class StudentCourseGradeController {
         return studentCourseGradeRepository.findByProgressEquals100();
     }
 
+    @GetMapping("/on-progress")
+    public List<StudentCourseGrade> getCoursesWithProgressIncomplete() {
+        return studentCourseGradeRepository.findByProgressLeesThan100();
+    }
+
     @GetMapping("/check-enrollment/{studentId}/{courseId}")
     public boolean checkEnrollment(@PathVariable Integer studentId, @PathVariable Integer courseId) {
         return studentCourseGradeRepository.existsByStudent_StudentIdAndCourse_CourseId(studentId, courseId);

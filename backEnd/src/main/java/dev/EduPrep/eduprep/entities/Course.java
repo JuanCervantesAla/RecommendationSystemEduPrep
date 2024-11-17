@@ -22,6 +22,7 @@ public class Course {
     private Integer howManyLesson;
     private String category;
     private String videoUrl;
+    private String imageUrl;
 
     @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
@@ -141,5 +142,13 @@ public class Course {
 
     public void setExam(Exam exam) {
         this.exam = exam;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -8,9 +8,9 @@
     border-radius: 10px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    margin: 10px 0;       
+    margin: 10px 0;
     text-align: center;
-    width: 100%;          
+    width: 100%;
     max-width: none;
     transition: transform 0.3s ease;
 }
@@ -18,4 +18,11 @@
 .cardCourse:hover,
 .cardCourse:focus {
     transform: scale(1.05);
+}
+
+.cardImage {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 15px;
 }

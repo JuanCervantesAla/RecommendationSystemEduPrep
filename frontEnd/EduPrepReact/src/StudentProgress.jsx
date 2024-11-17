@@ -11,6 +11,8 @@ const StudentProgress = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [completedCourses, setCompletedCourses] = useState([]);
+  const [progressData, setProgressData] = useState([]);
+  const [recommendedCourses, setRecommendedCourses] = useState([]);
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/studentcoursegrade/progress-complete')
@@ -21,34 +23,36 @@ const StudentProgress = () => {
           studentCourseGradeKey: item.studentCourseGradeKey
         }));
         setCompletedCourses(coursesWithGrades);
-        console.log(coursesWithGrades);
       })
       .catch((error) => {
         console.error("Fallo al traer los cursos completos", error);
       });
-  }, []);
 
-  const recommendedCourses = ["Psicologia", "Databases", "Web Coding"];
-  const inProgressCourses = [
-    "Matemáticas",
-    "Psicologia",
-    "Inglés",
-    "POO",
-    "Historia",
-  ];
-  // const completedCourses = [
-  //   { name: "Geografia 1", grade: 95 },
-  //   { name: "Dibujo 2", grade: 85 },
-  //   { name: "Ingles 2", grade: 69 },
-  //   { name: "Ofimatica", grade: 78 },
-  // ];
-  const progressData = [
-    { name: "Matemáticas", progress: 70 },
-    { name: "Español", progress: 25 },
-    { name: "Psicologia", progress: 15 },
-    { name: "POO", progress: 90 },
-    { name: "Historia", progress: 50 },
-  ];
+      axios.get('http://localhost:8080/api/studentcoursegrade/on-progress')
+      .then((response) => {
+        const coursesWithProgress = response.data.map(item => ({
+          course: item.course, 
+          progress: item.progress,    
+          studentCourseGradeKey: item.studentCourseGradeKey
+        }));
+        setProgressData(coursesWithProgress);
+      })
+      .catch((error) => {
+        console.error("Fallo al traer los cursos completos", error);
+      });
+
+      axios.get(`http://localhost:8080/api/recommendation/${user.studentId}`)
+        .then((response) => {
+          setRecommendedCourses(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Fallo al traer los cursos recomendados", error);
+        });
+
+
+
+  }, []);
 
   const handleClickCourse = () => {
     navigate('/course');
@@ -56,20 +60,25 @@ const StudentProgress = () => {
 
   return (
     <div className="student-progress">
-      <NavBar />
+      {isAuthenticated ? (
+        <NavBarLogged />
+      ) : (
+        <NavBar />
+      )}
       <h1>PROGRESO DE APRENDIZAJE DEL ESTUDIANTE {user.firstname}</h1>
       <div className="course-sections">
         <CourseBox title="Cursos Recomendados">
           {recommendedCourses.map((course) => (
-            <li key={course}>
-              {course} <button onClick={handleClickCourse}>Tomar curso</button>
+            <li key={course.courseId}>
+              {course.name} <button onClick={() => handleContinueCourse(course.courseId)}>Continuar</button>
             </li>
           ))}
         </CourseBox>
         <CourseBox title="En Progreso">
-          {inProgressCourses.map((course) => (
-            <li key={course}>
-              {course} <button onClick={handleClickCourse}>Continuar con el curso</button>
+          {progressData.map((item) => (
+            <li key={item.studentCourseGradeKey.courseId}>
+              {item.course.name}
+              <button onClick={() => handleClickCourse(item.course.courseId)}>Continuar con el curso</button>
             </li>
           ))}
         </CourseBox>
@@ -85,8 +94,8 @@ const StudentProgress = () => {
       <div className="progress-section">
         <h2>Barra de Progreso</h2>
         {progressData.map((course) => (
-          <div key={course.name} className="progress-item">
-            <span>{course.name}</span>
+          <div key={course.studentCourseGradeKey.courseId} className="progress-item">
+            <span>{course.course.name}</span>
             <div className="progress-bar-container">
               <div
                 className="progress-bar2"

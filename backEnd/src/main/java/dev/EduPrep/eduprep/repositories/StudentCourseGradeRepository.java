@@ -17,4 +17,7 @@ public interface StudentCourseGradeRepository extends JpaRepository<StudentCours
 
     @Query("SELECT scg FROM StudentCourseGrade scg WHERE scg.progress = 100")
     List<StudentCourseGrade> findByProgressEquals100();
+
+    @Query("SELECT scg FROM StudentCourseGrade scg WHERE scg.progress < 100")
+    List<StudentCourseGrade> findByProgressLeesThan100();
 }

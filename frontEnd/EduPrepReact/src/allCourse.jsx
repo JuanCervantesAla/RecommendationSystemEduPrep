@@ -31,6 +31,7 @@ export const allCourse = () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/course');
                 const coursesData = Array.isArray(response.data) ? response.data : [];
+                console.log(response.data);
                 setCourses(coursesData);
                 setAllCourses(coursesData);
             } catch (error) {
@@ -83,7 +84,6 @@ export const allCourse = () => {
     };
 
     useEffect(() => {
-        console.log("Longitud de cursos:", courses.length);
     }, [courses]);
 
     return (
@@ -124,6 +124,7 @@ export const allCourse = () => {
                                 title={course.name}
                                 description={course.textintroduction}
                                 category={course.category}
+                                imageUrl={`http://localhost:8080${course.imageUrl}`}
                                 onClick={() => handleClickCourse(course)}
                             />
                         ))
