@@ -34,7 +34,6 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<Registro />} />
           <Route path="/courseToSubscribe" element={<CourseView />} />
-          <Route path="/cursos" element={<p>Here needs to be the register page</p>} />
         </Routes>
       </Router>
     </AuthProvider>

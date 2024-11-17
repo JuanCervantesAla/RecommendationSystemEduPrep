@@ -19,8 +19,8 @@ public class Lesson {
     private Integer lessonId;
 
     private String title;
-    private String description;
-    private String videoUrl;
+    @Column(length = 800)
+    private String content;
 
 
     ////////////////JPA RELATIONS
@@ -32,16 +32,8 @@ public class Lesson {
 
     @ManyToOne//Many to one make it each lesson part of a course
     @JoinColumn(name = "courseId", nullable = false)
+    @JsonIgnore
     private Course course;
-
-    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)//Each lesson will have an indeterminated number of sections
-    private List<Section> sections;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "examId", referencedColumnName = "examId")
-    private Exam exam;
-
-
 
     /**********Constructor****************/
     public Lesson(){
@@ -65,12 +57,12 @@ public class Lesson {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getContent() {
+        return content;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Course getCourse() {
@@ -79,30 +71,6 @@ public class Lesson {
 
     public void setCourse(Course course) {
         this.course = course;
-    }
-
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
-    }
-
-    public List<Section> getSections() {
-        return sections;
-    }
-
-    public void setSections(List<Section> sections) {
-        this.sections = sections;
-    }
-
-    public Exam getExam() {
-        return exam;
-    }
-
-    public void setExam(Exam exam) {
-        this.exam = exam;
     }
 
     public Collection<StudentLessonGrade> getLessonGrade() {

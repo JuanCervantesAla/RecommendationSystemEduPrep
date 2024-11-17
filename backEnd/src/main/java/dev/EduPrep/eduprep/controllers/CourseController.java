@@ -2,8 +2,11 @@ package dev.EduPrep.eduprep.controllers;
 
 
 import dev.EduPrep.eduprep.entities.Course;
+import dev.EduPrep.eduprep.entities.Exam;
+import dev.EduPrep.eduprep.entities.Lesson;
 import dev.EduPrep.eduprep.entities.User;
 import dev.EduPrep.eduprep.repositories.CourseRepository;
+import dev.EduPrep.eduprep.repositories.ExamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,34 @@ public class CourseController {
     @GetMapping
     public List<Course> courses(){ //Retrieves all the courses
         return courseRepository.findAll();
+    }
+
+    @GetMapping("/{courseId}/lessons")
+    public ResponseEntity<List<Lesson>> getLessonsByCourseId(@PathVariable Integer courseId) {
+        Course course = courseRepository.findById(courseId).orElse(null);
+
+        if (course == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Lesson> lessons = course.getLessons();
+        return ResponseEntity.ok(lessons);
+    }
+
+    @GetMapping("/{courseId}/exam")
+    public ResponseEntity<Exam> getExamByCourseId(@PathVariable Integer courseId) {
+        Course course = courseRepository.findById(courseId).orElse(null);
+
+        if (course == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Exam exam = course.getExam();
+        if (exam == null) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(exam);
     }
 
     @GetMapping("/category/{category}")

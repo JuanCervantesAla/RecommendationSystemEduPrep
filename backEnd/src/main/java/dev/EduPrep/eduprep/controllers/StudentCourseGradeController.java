@@ -61,7 +61,7 @@ public class StudentCourseGradeController {
         Course course = courseRepository.findById(courseId).orElse(null);
 
         if (student == null || course == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Estudiante o curso no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student/Course not found");
         }
 
         StudentCourseGrade studentCourseGrade = new StudentCourseGrade();
@@ -74,6 +74,33 @@ public class StudentCourseGradeController {
 
         studentCourseGradeRepository.save(studentCourseGrade);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Registro agregado exitosamente");
+        return ResponseEntity.status(HttpStatus.CREATED).body("Subscribed successfully");
     }
+
+    @DeleteMapping("/delete/{studentId}/{courseId}")
+    public ResponseEntity<String> deleteStudentCourseGrade(
+            @PathVariable Integer studentId,
+            @PathVariable Integer courseId) {
+
+        User student = userRepository.findById(studentId).orElse(null);
+        Course course = courseRepository.findById(courseId).orElse(null);
+
+        if (student == null || course == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student/Course not found");
+        }
+
+        StudentCourseGradeKey studentCourseGradeKey = new StudentCourseGradeKey(studentId, courseId);
+        StudentCourseGrade studentCourseGrade = studentCourseGradeRepository.findById(studentCourseGradeKey).orElse(null);
+
+        if (studentCourseGrade == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found");
+        }
+
+        studentCourseGradeRepository.delete(studentCourseGrade);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Course unsubscribed successfully");
+    }
+
+
+
 }

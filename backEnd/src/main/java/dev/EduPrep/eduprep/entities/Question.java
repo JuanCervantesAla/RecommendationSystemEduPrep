@@ -1,6 +1,9 @@
 package dev.EduPrep.eduprep.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Question {
@@ -11,19 +14,24 @@ public class Question {
     private Integer questionId;
 
     private String question;
-    private String answer;
+    private String correctAnswer;
+
+    @ElementCollection
+    private List<String> options;
 
     ///////////////////JPA RELATIONS
     @ManyToOne//To make each question linked to the exam
     @JoinColumn(name = "examId", nullable = false)
+    @JsonIgnore
     private Exam exam;
 
 
     /**********Constructor****************/
     public Question(){}
-    public Question(String question_, String answer_){
-        this.question=question_;
-        this.answer = answer_;
+    public Question(String question, List<String> options, String correctAnswer) {
+        this.question = question;
+        this.options = options;
+        this.correctAnswer = correctAnswer;
     }
 
 
@@ -44,12 +52,12 @@ public class Question {
         this.question = question;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getCorrectAnswer() {
+        return correctAnswer;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setCorrectAnswer(String answer) {
+        this.correctAnswer = answer;
     }
 
     public Exam getExam() {
@@ -58,5 +66,13 @@ public class Question {
 
     public void setExam(Exam exam) {
         this.exam = exam;
+    }
+
+    public List<String> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<String> options) {
+        this.options = options;
     }
 }

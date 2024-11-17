@@ -103,10 +103,22 @@
     outline: none;
 }
 
-.subscribedButton {
-    background-color: grey;
+.suscribedButton {
+    background-color: #007bff; 
     color: white;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.suscribedButton.disabled {
+    background-color: #d3d3d3; 
     cursor: not-allowed;
+}
+
+.goToCourse{
+    margin-left: 5%;
 }
 
 .courseText button:active{

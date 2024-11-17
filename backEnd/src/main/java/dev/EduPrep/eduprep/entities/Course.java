@@ -10,30 +10,32 @@ import java.util.List;
 @Entity
 public class Course {
 
-    /**********Attributes************/
-    @Id//Indicates this att is ID
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer courseId;
-
     private String name;
+    @Column(length = 500)
     private String textintroduction;
     private Integer timedurationmonth;
     private boolean isWorkshop;
     private Integer difficult;
     private Integer howManyLesson;
     private String category;
+    private String videoUrl;
 
-    /////////////////JPA ANNOTATIONS
     @JsonIgnore
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private Collection<StudentCourseGrade> grades = new ArrayList<>();
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Lesson> lessons;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "examId", referencedColumnName = "examId")
+    private Exam exam;
 
-    /**********Constructor****************/
-    public Course(){}
+    // Constructor sin inicialización de exam para evitar referencia circular
+    public Course() {}
 
 
     /***********************Getter and Setter***************/
@@ -123,5 +125,21 @@ public class Course {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
+    public Exam getExam() {
+        return exam;
+    }
+
+    public void setExam(Exam exam) {
+        this.exam = exam;
     }
 }
