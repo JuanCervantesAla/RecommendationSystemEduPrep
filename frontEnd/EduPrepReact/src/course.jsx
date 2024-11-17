@@ -21,7 +21,7 @@ export default function Introduccion() {
   const [correctCount, setCorrectCount] = useState(0);
   const [completedTasks, setCompletedTasks] = useState(0);
   const [completedButtons, setCompletedButtons] = useState(new Set());
-
+  const [progressPercentage, setProgressPercentage] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,11 +34,15 @@ export default function Introduccion() {
           content: lesson.content || 'Contenido no disponible',
         }));
         setLessons(transformedLessons);
-        console.log(course.videoUrl);
-        console.log("Lecciones obtenidas:", transformedLessons);
+        const response2 = await axios.get(`http://localhost:8080/api/studentcoursegrade/getRecord/${user.studentId}/${course.courseId}`);
+        setProgressPercentage(response2.data.progress);
+        console.log(response2.data.progress);
+        
+
       } catch (error) {
-        console.error("Error al obtener las lecciones:", error);
+        console.error("Error al obtener las lecciones o el porcentaje:", error);
       }
+
     };
 
     const getExamData = async () => {
@@ -46,7 +50,6 @@ export default function Introduccion() {
         const response = await axios.get(`http://localhost:8080/api/course/${course.courseId}/exam`);
         const examData = response.data || [];
         setExamData(examData);
-        console.log("Examen obtenido:", examData);
       } catch (error) {
         console.error("Error al obtener el examen:", error);
       }
@@ -57,7 +60,6 @@ export default function Introduccion() {
   }, [course.courseId]);
 
   const toggleSection = (section) => {
-    // Aquí controlamos si la sección es "Actividad" y la activamos
     if (section === 'Actividad') {
       setActiveSection('Actividad');
     } else {
@@ -95,14 +97,6 @@ export default function Introduccion() {
     setCorrectCount(0);
   };
 
-  const completeTask = (section, title) => {
-    const taskIdentifier = `${section}-${title}`;
-    if (!completedButtons.has(taskIdentifier)) {
-      setCompletedTasks((prev) => prev + 1);
-      setCompletedButtons((prev) => new Set(prev).add(taskIdentifier));
-    }
-  };
-
   const renderCompletionButton = () => {
     if (activeSection === 'Examen' && examSubmitted && correctCount === examData?.questions.length) {
       return <button className='btnCourse' onClick={() => completeTask('Examen', 'Examen final')} disabled={completedButtons.has('Examen-Examen final')}>Tarea completada</button>;
@@ -118,6 +112,32 @@ export default function Introduccion() {
       { title: 'Ver video de apoyo', content: <iframe width="800" height="500" src={course.videoUrl} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe> },
     ],
     Examen: examData,
+  };
+
+  //  const progressPercentage = ((completedTasks / Object.keys(sections).length) * 100).toFixed(0);
+
+  const completeTask = async (section, title) => {
+    const taskIdentifier = `${section}-${title}`;
+    if (!completedButtons.has(taskIdentifier)) {
+      setCompletedTasks((prev) => prev + 1);
+      setCompletedButtons((prev) => new Set(prev).add(taskIdentifier));
+    }
+  
+    try {
+      const updatedProgressPercentage = ((completedTasks + 1) / Object.keys(sections).length) * 100;
+      console.log("Progreso calculado:", updatedProgressPercentage);
+  
+      const response = await axios.put(
+        `http://localhost:8080/api/studentcoursegrade/updateProgress/${user.studentId}/${course.courseId}/${updatedProgressPercentage.toFixed(0)}`
+      );
+  
+      console.log("Actualizado con éxito:", response.data);
+  
+      // Actualiza el estado con el progreso calculado.
+      setProgressPercentage(updatedProgressPercentage.toFixed(0));
+    } catch (error) {
+      console.error("Error al actualizar:", error);
+    }
   };
 
   return (
@@ -150,7 +170,7 @@ export default function Introduccion() {
         </aside>
         <section className="psicontent">
           <div>
-            <h2>Progreso: {((completedTasks / Object.keys(sections).length) * 100).toFixed(0)}%</h2>
+            <h2>Progreso: {progressPercentage}%</h2>
             <div className="progress-bar">
               <div className="progress" style={{ width: `${(completedTasks / Object.keys(sections).length) * 100}%` }}></div>
             </div>
@@ -168,6 +188,9 @@ export default function Introduccion() {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen>
               </iframe>
+              <button className="btnCourse" onClick={() => completeTask('Actividad', 'Ver video de apoyo')} disabled={completedButtons.has('Actividad-Ver video de apoyo')}>
+                Marcar tarea completa
+              </button>
             </div>
           )}
 

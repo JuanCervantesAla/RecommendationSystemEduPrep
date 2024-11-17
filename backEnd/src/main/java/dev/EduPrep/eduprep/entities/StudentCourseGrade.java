@@ -19,6 +19,7 @@ public class StudentCourseGrade {
     private Course course;
 
     private float grade;
+    private float progress;
 
     // Getters y Setters
 
@@ -52,5 +53,13 @@ public class StudentCourseGrade {
 
     public void setGrade(float grade) {
         this.grade = grade;
+    }
+
+    public float getProgress() {
+        return progress;
+    }
+
+    public void setProgress(float progress) {
+        this.progress = progress;
     }
 }

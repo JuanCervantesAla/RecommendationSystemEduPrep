@@ -27,6 +27,7 @@ function Card() {
     const subscribe = async () => {
         const studentId = user.studentId;
         const grade = -1;
+        const progress = 0.0;
 
         if (!isAuthenticated) {
             toast.error("Debes estar autenticado para inscribirte.");
@@ -45,7 +46,7 @@ function Card() {
                 toast.error("Ya estas registrado en el curso!");
             } else {
                 try {
-                    const response = await axios.post(`http://localhost:8080/api/studentcoursegrade/add/${studentId}/${course.courseId}/${grade}`);
+                    const response = await axios.post(`http://localhost:8080/api/studentcoursegrade/add/${studentId}/${course.courseId}/${grade}/${progress}`);
                     if (response.status === 201) {
                         toast("Bienvenido al curso!");
                         setIsSubscribed(true);

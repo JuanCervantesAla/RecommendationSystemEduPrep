@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/studentcoursegrade")
@@ -51,11 +52,28 @@ public class StudentCourseGradeController {
         return studentCourseGradeRepository.existsByStudent_StudentIdAndCourse_CourseId(studentId, courseId);
     }
 
-    @PostMapping("/add/{studentId}/{courseId}/{grade}")
+    @GetMapping("/getRecord/{studentId}/{courseId}")
+    public ResponseEntity<?> getStudentCourseGrade(
+            @PathVariable Integer studentId,
+            @PathVariable Integer courseId) {
+
+        Optional<StudentCourseGrade> optionalRecord = studentCourseGradeRepository.findById(
+                new StudentCourseGradeKey(studentId, courseId));
+
+        if (optionalRecord.isPresent()) {
+            return ResponseEntity.ok(optionalRecord.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Record not found");
+        }
+    }
+
+
+    @PostMapping("/add/{studentId}/{courseId}/{grade}/{progress}")
     public ResponseEntity<String> addStudentCourseGrade(
             @PathVariable Integer studentId,
             @PathVariable Integer courseId,
-            @PathVariable float grade) {
+            @PathVariable float grade,
+            @PathVariable float progress) {
 
         User student = userRepository.findById(studentId).orElse(null);
         Course course = courseRepository.findById(courseId).orElse(null);
@@ -70,12 +88,44 @@ public class StudentCourseGradeController {
         studentCourseGrade.setStudent(student);
         studentCourseGrade.setCourse(course);
         studentCourseGrade.setGrade(grade);
+        studentCourseGrade.setProgress(progress);
 
 
         studentCourseGradeRepository.save(studentCourseGrade);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Subscribed successfully");
     }
+
+    @PutMapping("/updateProgress/{studentId}/{courseId}/{progress}")
+    public ResponseEntity<String> updateStudentCourseProgress(
+            @PathVariable Integer studentId,
+            @PathVariable Integer courseId,
+            @PathVariable float progress) {
+
+        User student = userRepository.findById(studentId).orElse(null);
+        Course course = courseRepository.findById(courseId).orElse(null);
+
+        if (student == null || course == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student/Course not found");
+        }
+
+
+        StudentCourseGradeKey studentCourseGradeKey = new StudentCourseGradeKey(studentId, courseId);
+        StudentCourseGrade studentCourseGrade = studentCourseGradeRepository.findById(studentCourseGradeKey).orElse(null);
+
+
+        if (studentCourseGrade == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student-Course relation not found");
+        }
+
+
+        studentCourseGrade.setProgress(progress);
+
+        studentCourseGradeRepository.save(studentCourseGrade);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Progress updated successfully");
+    }
+
 
     @DeleteMapping("/delete/{studentId}/{courseId}")
     public ResponseEntity<String> deleteStudentCourseGrade(
