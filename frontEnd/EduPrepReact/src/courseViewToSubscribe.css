@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
+
+.courseToSubscribeContainer {
+    font-family: 'Poppins', sans-serif;
+    padding: 8%;
+    background-color: #fff;
+    width: 100%;
+    height: 100vh;
+}
+
+.courseContainer {
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start; 
+    padding: 20px;
+    width: 100%;
+    gap: 20px;
+}
+
+#eduprep{
+    text-align: left;
+    font-size:xx-large;
+}
+
+.courseText {
+    width: 65%; 
+    text-align: left;
+}
+
+.courseText p {
+    font-family: 'Lora', serif;
+    color: gray;
+}
+
+.courseText span {
+    font-family: 'Lora', serif;
+    color: #6957f2;
+}
+
+.coursecardCourse {
+    font-family: 'Lora', serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid hsl(0, 0%, 80%);
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 30%; 
+    transition: transform 0.3s ease;
+}
+
+.coursecardCourse h3{
+    font-size: medium;
+}
+.coursecardCourse p{
+    text-align: left;
+    font-size:small;
+}
+
+.coursecardCourse hr {
+    width: 100%; 
+    border: none;
+    border-top: 1.5px solid #ccc; 
+    margin: 10px 0; 
+}
+
+.coursecardCourse div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; 
+}
+
+.coursecardCourse div p {
+    display: inline-flex;
+    align-items: center;
+    text-align: left; 
+    margin: 0;
+}
+
+.coursecardCourse p .fa-icon {
+    margin-right: 8px; 
+}
+
+.courseContainer h1 {
+    color: #000000;
+}
+
+.courseText button{
+    background-color: #0D47A1;
+    color: #ffffff;
+    outline: none;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out; 
+}
+
+.courseText button:focus{
+    outline: none;
+}
+
+.suscribedButton {
+    background-color: #007bff; 
+    color: white;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.suscribedButton.disabled {
+    background-color: #d3d3d3; 
+    cursor: not-allowed;
+}
+
+.goToCourse{
+    margin-left: 5%;
+}
+
+.courseText button:active{
+    outline: none;
+    transform: scale(0.95);
+}
