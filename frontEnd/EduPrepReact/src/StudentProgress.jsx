@@ -54,12 +54,16 @@ const StudentProgress = () => {
 
   }, []);
 
-  const handleClickCourse = () => {
-    navigate('/course');
+  const handleClickCourse = (course) => {
+    navigate('/course', { state: { course } });
+  };
+
+  const handleContinueCourse = (course) => {
+    navigate('/courseToSubscribe', { state: { course } });
   };
 
   const getCertificate = (course) => {
-    navigate('/certificate', { state: { course } }); // Pasar el curso como state
+    navigate('/certificate', { state: { course } });
   };
 
   return (
@@ -74,7 +78,7 @@ const StudentProgress = () => {
         <CourseBox title="Cursos Recomendados">
           {recommendedCourses.map((course) => (
             <li key={course.courseId}>
-              {course.name} <button onClick={() => handleContinueCourse(course.courseId)}>Continuar</button>
+              {course.name} <button onClick={() => handleContinueCourse(course)}>Continuar</button>
             </li>
           ))}
         </CourseBox>
