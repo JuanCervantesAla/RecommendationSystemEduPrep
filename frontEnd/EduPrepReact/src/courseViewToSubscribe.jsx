@@ -93,8 +93,10 @@ function Card() {
                             <hr />
                             <h1>{course.name}</h1>
                             <br />
+                            <p>Overview</p>
                             <p>{course.textintroduction}</p>
                             <br />
+                            <hr/>
                             <span>Categoria: {course.category}</span>
                             <br />
                             <br />

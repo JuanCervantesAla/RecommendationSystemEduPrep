@@ -31,7 +31,6 @@ export const allCourse = () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/course');
                 const coursesData = Array.isArray(response.data) ? response.data : [];
-                console.log(response.data);
                 setCourses(coursesData);
                 setAllCourses(coursesData);
             } catch (error) {
@@ -122,7 +121,7 @@ export const allCourse = () => {
                             <Card
                                 key={course.courseId}
                                 title={course.name}
-                                description={course.textintroduction}
+                                description={course.text}
                                 category={course.category}
                                 imageUrl={`http://localhost:8080${course.imageUrl}`}
                                 onClick={() => handleClickCourse(course)}

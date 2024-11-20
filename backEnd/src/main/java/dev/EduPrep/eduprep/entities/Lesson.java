@@ -19,7 +19,7 @@ public class Lesson {
     private Integer lessonId;
 
     private String title;
-    @Column(length = 800)
+    @Column(length = 3500)
     private String content;
 
 

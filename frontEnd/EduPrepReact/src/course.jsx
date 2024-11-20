@@ -16,6 +16,7 @@ export default function Introduccion() {
   const [examData, setExamData] = useState([]);
   const [activeSection, setActiveSection] = useState(null);
   const [activeSubSection, setActiveSubSection] = useState(null);
+  const [activeLesson, setActiveLesson] = useState(null); // Para almacenar la lección activa
   const [examAnswers, setExamAnswers] = useState({});
   const [examSubmitted, setExamSubmitted] = useState(false);
   const [correctCount, setCorrectCount] = useState(0);
@@ -28,6 +29,7 @@ export default function Introduccion() {
     const getLessons = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/api/course/${course.courseId}/lessons`);
+        console.log(response.data);
         const lessonsData = Array.isArray(response.data) ? response.data : [];
         const transformedLessons = lessonsData.map((lesson) => ({
           title: lesson.title || 'Título desconocido',
@@ -36,13 +38,9 @@ export default function Introduccion() {
         setLessons(transformedLessons);
         const response2 = await axios.get(`http://localhost:8080/api/studentcoursegrade/getRecord/${user.studentId}/${course.courseId}`);
         setProgressPercentage(response2.data.progress);
-        console.log(response2.data.progress);
-        
-
       } catch (error) {
         console.error("Error al obtener las lecciones o el porcentaje:", error);
       }
-
     };
 
     const getExamData = async () => {
@@ -50,6 +48,7 @@ export default function Introduccion() {
         const response = await axios.get(`http://localhost:8080/api/course/${course.courseId}/exam`);
         const examData = response.data || [];
         setExamData(examData);
+        console.log(response.data);
       } catch (error) {
         console.error("Error al obtener el examen:", error);
       }
@@ -114,8 +113,6 @@ export default function Introduccion() {
     Examen: examData,
   };
 
-  //  const progressPercentage = ((completedTasks / Object.keys(sections).length) * 100).toFixed(0);
-
   const completeTask = async (section, title) => {
     const taskIdentifier = `${section}-${title}`;
     if (!completedButtons.has(taskIdentifier)) {
@@ -147,7 +144,6 @@ export default function Introduccion() {
         <NavBar />
       )}
       <header>
-        <img src={"./src/assets/introduccionalapsicologia.png"} width="90" height="90" />
         <h1>{course.name}</h1>
         <div>
           <h4>Progreso: {progressPercentage}%</h4>
@@ -157,7 +153,6 @@ export default function Introduccion() {
         </div>
       </header>
       <main className="course-content">
-        
         <aside className="psisidebar">
           {Object.entries(sections).map(([section, subSections]) => (
             <div key={section} className={`psisection ${activeSection === section ? 'active' : ''}`}>
@@ -170,21 +165,36 @@ export default function Introduccion() {
                 }}
               >
                 {activeSection === section && Array.isArray(subSections) && (
-                  <ul>
-                    {subSections.map((subSection) => (
-                      <li key={subSection.title} onClick={() => toggleSubSection(subSection.title)}>
-                        {subSection.title}
-                      </li>
-                    ))}
-                  </ul>
+                  <h3 className="black-text" onClick={() => toggleSubSection(subSection.title)}>Ver contenido</h3>
                 )}
               </div>
             </div>
           ))}
         </aside>
         <section className="psicontent">
+          {activeSection === 'Lectura' && (
+            <div>
+              <h2>Lecciones</h2>
+              <div className="lesson-buttons">
+                {lessons.map((lesson, index) => (
+                  <button
+                    key={index}
+                    className={`lesson-button ${activeLesson === index ? 'active' : ''}`}
+                    onClick={() => setActiveLesson(index)}
+                  >
+                    {lesson.title}
+                  </button>
+                ))}
+              </div>
+              {activeLesson !== null && (
+                <div className="lesson-content">
+                  <h3>{lessons[activeLesson].title}</h3>
+                  <p>{lessons[activeLesson].content}</p>
+                </div>
+              )}
+            </div>
+          )}
           
-
           {activeSection === 'Actividad' && (
             <div>
               <h2>Ver video de apoyo</h2>
@@ -197,52 +207,43 @@ export default function Introduccion() {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen>
               </iframe>
-              <button className="btnCourse" onClick={() => completeTask('Actividad', 'Ver video de apoyo')} disabled={completedButtons.has('Actividad-Ver video de apoyo')}>
-                Marcar tarea completa
-              </button>
+              <button className="btnCourse" onClick={() => completeTask('Actividad', 'Ver video de apoyo')} disabled={completedButtons.has('Actividad-Ver video de apoyo')}>Tarea completada</button>
             </div>
           )}
-
+          
           {activeSection === 'Examen' && (
-            <div className="exam-container">
-              <h2>{examData.title}</h2>
-              <div className="questions-container">
-                {examData.questions.map((question, index) => (
-                  <div key={question.questionId} className="question-item">
-                    <p className="question-text">{index + 1}. {question.question}</p>
-                    <div className="options-container">
-                      {question.options.map((option) => (
-                        <label key={option} className="option-label">
-                          <input
-                            type="radio"
-                            name={`question-${question.questionId}`}
-                            value={option}
-                            onChange={() => handleExamAnswer(question.questionId, option)}
-                            disabled={examSubmitted}
-                            className="option-input"
-                          />
-                          <span>{option}</span>
-                        </label>
-                      ))}
-                    </div>
+            <div>
+              <h2>Examen</h2>
+              {examData?.questions.map((question, index) => (
+                <div key={index} className="question-item">
+                  <p>{question.question}</p>
+                  <div className="answers">
+                    {question.options.map((option, i) => (
+                      <button
+                        key={i}
+                        onClick={() => handleExamAnswer(question.questionId, option)}
+                        className={`answer-button ${examAnswers[question.questionId] === option ? 'selected' : ''}`}
+                      >
+                        {option}
+                      </button>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <div className="exam-actions">
-                {!examSubmitted ? (
-                  <button className='btnCourse' onClick={submitExam}>Enviar respuestas</button>
-                ) : (
-                  <div>
-                    <p className="results">Respuestas correctas: {correctCount}/{examData.questions.length}</p>
-                    <button className='btnCourse' onClick={resetExam}>Reintentar examen</button>
-                  </div>
-                )}
-                {renderCompletionButton()}
-              </div>
+                </div>
+              ))}
+              <button className="btnCourse" onClick={submitExam} disabled={examSubmitted}>
+                Enviar examen
+              </button>
+              {examSubmitted && (
+                <div>
+                  <p>Resultado: {correctCount} de {examData.questions.length} respuestas correctas</p>
+                  {renderCompletionButton()}
+                </div>
+              )}
             </div>
           )}
         </section>
       </main>
+      <ToastContainer />
     </div>
   );
 }
